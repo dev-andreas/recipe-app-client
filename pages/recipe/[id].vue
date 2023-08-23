@@ -20,19 +20,22 @@
 </template>
 
 <script setup>
+import { useRecipeStore } from "~/stores/stores.js"
+const recipeStore = useRecipeStore()
 const route = useRoute()
 const recipe = ref(null)
 
-onMounted(() => {
-    const recipes = JSON.parse(localStorage.getItem("recipes"))
+onMounted(async () => {
+    if (recipeStore.recipes.length == 0) {
+        await recipeStore.loadRecipes()
+    }
+
     const lastIndex = route.params.id.lastIndexOf("-")
     const id = route.params.id.substring(lastIndex + 1)
 
-    if (typeof recipes == "object") {
-        const filteredRecipes = recipes.filter((recipe) => recipe.id == id)
-        if (filteredRecipes.length != 0) {
-            recipe.value = filteredRecipes[0]
-        }
+    const filteredRecipes = recipeStore.recipes.filter((recipe) => recipe.id == id)
+    if (filteredRecipes.length != 0) {
+        recipe.value = filteredRecipes[0]
     }
 })
 </script>

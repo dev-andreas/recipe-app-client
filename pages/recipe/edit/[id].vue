@@ -21,6 +21,9 @@
                 <button class="btn btn-secondary self-start" @click="showNewIngredientModal = false">Cancel</button>
             </div>
         </ModalPage>
+        <ModalPage title="Error" v-model="showErrorModal">
+            <p>{{ errorMsg }}</p>
+        </ModalPage>
         <h1 class="text-3xl font-bold"><span v-if="id == 'new'">New Recipe</span><span v-else>{{ name }}</span></h1>
         <form class="flex flex-col gap-5 mt-10 w-80" @submit.prevent="save()">
             <div class="flex flex-col gap-1">
@@ -62,6 +65,8 @@
 </template>
 
 <script setup>
+import { useRecipeStore } from "~/stores/stores.js"
+const recipeStore = useRecipeStore()
 const route = useRoute()
 
 const id = ref(route.params.id)
@@ -70,13 +75,18 @@ const type = ref("")
 const instructions = ref("")
 const ingredients = ref([])
 const showNewIngredientModal = ref(false)
+const showErrorModal = ref(false)
+const errorMsg = ref("")
 
 const ingredientName = ref("")
 const ingredientAmount = ref("")
 const ingredientUnit = ref("")
 
-onMounted(() => {
-    const recipes = JSON.parse(localStorage.getItem("recipes"))
+onMounted(async () => {
+    if (recipeStore.recipes.length == 0) {
+        await recipeStore.loadRecipes()
+    }
+    const recipes = recipeStore.recipes
 
     if (id.value != "new" && typeof recipes == "object") {
         const filteredRecipes = recipes.filter((recipe) => recipe.id == id.value)
@@ -95,27 +105,41 @@ onMounted(() => {
     }
 })
 
-function save() {
+async function save() {
     if (name.value == "") return
     if (type.value == "") return
     if (instructions.value == "") return
 
-    let recipes = JSON.parse(localStorage.getItem("recipes"))
-
-    if (recipes == null || typeof recipes != "object") {
-        recipes = []
-    }
+    let success = false
 
     if (id.value == "new") {
-        let tempId = localStorage.getItem("nextId")
-        recipes.push({ id: tempId, name: name.value, type: type.value, ingredients: ingredients.value, instructions: instructions.value })
-        localStorage.setItem("nextId", ++tempId)
+        success = await recipeStore.createRecipe({
+            "id": 0,
+            "name": name.value,
+            "type": type.value,
+            "instructions": instructions.value,
+            "ingredients": ingredients.value
+        })
     } else {
-        recipes = recipes.filter((recipe) => {console.log(recipe.id, " ", id.value); return recipe.id != id.value})
-        recipes.push({ id: id.value, name: name.value, type: type.value, ingredients: ingredients.value, instructions: instructions.value })
+        success = await recipeStore.updateRecipe({
+            "id": id.value,
+            "name": name.value,
+            "type": type.value,
+            "instructions": instructions.value,
+            "ingredients": ingredients.value
+        })
     }
 
-    localStorage.setItem("recipes", JSON.stringify(recipes))
+    if (!success) {
+        if (recipeStore.lastResponse != null) {
+            errorMsg.value = "Couldn't save recipe. Code: " + recipeStore.lastResponse.status
+            showErrorModal.value = true
+        } else {
+            errorMsg.value = "Couldn't save recipe. No connection established to the server."
+            showErrorModal.value = true
+        }
+    }
+
     navigateTo("/my-recipes")
 }
 

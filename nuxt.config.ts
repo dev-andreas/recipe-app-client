@@ -22,4 +22,9 @@ export default defineNuxtConfig({
     },
     modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
     css: ["~/assets/css/style.css"],
+    runtimeConfig: {
+        public: {
+            apiUrl: "http://localhost:8080/"
+        }
+    }
 })
