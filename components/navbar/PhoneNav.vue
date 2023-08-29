@@ -38,8 +38,8 @@
               </li>
             </ul>
             <div class="flex items-center gap-5">
-              <NuxtLink to="/login" class="btn btn-primary text-center" @click="open = false">Login</NuxtLink>
-              <NuxtLink to="/register" class="btn btn-primary text-center" @click="open = false">Register</NuxtLink>
+              <NuxtLink to="/login" class="btn btn-primary text-center" @click="open = false">Sign in</NuxtLink>
+              <NuxtLink to="/register" class="btn btn-primary text-center" @click="open = false">Sign up</NuxtLink>
             </div>
           </div>
         </div>

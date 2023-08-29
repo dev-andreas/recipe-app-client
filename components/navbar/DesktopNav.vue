@@ -19,8 +19,8 @@
       </ul>
     </div>
     <div class="flex gap-3">
-      <NuxtLink to="/login" class="btn btn-primary">Login</NuxtLink>
-      <NuxtLink to="/register" class="btn btn-primary">Register</NuxtLink>
+      <NuxtLink to="/login" class="btn btn-primary">Sign in</NuxtLink>
+      <NuxtLink to="/register" class="btn btn-primary">Sign up</NuxtLink>
     </div>
   </div>
 </template>
