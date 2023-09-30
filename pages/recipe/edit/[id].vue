@@ -59,7 +59,7 @@
             </div>
             <div class="flex gap-2">
                 <input type="submit" class="btn btn-primary" value="Save">
-                <NuxtLink to="/" class="btn btn-secondary">Cancel</NuxtLink>
+                <button class="btn btn-secondary" @click="router.back()">Cancel</button>
             </div>
         </form>
     </div>
@@ -72,6 +72,7 @@ useAuthRecipeUser()
 
 const recipeStore = useRecipeStore()
 const route = useRoute()
+const router = useRouter()
 
 const id = ref(route.params.id)
 const name = ref("")
