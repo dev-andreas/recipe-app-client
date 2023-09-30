@@ -30,7 +30,10 @@
 </template>
 
 <script setup>
-import { useRecipeStore } from "~/stores/stores.js"
+import { useRecipeStore } from "~/stores/recipe.js"
+
+useAuthRecipeUser()
+
 const recipeStore = useRecipeStore()
 
 onMounted(async () => {

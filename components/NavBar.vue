@@ -6,26 +6,29 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
-import { useNavbarStore } from "~/stores/stores.js";
+import { useNavbarStore } from "~/stores/navbar.js"
+import { useAuthStore } from "~/stores/auth.js"
 
-const { paths } = storeToRefs(useNavbarStore());
+const navbarStore = useNavbarStore()
+const authStore = useAuthStore()
+
+const paths = computed(() => authStore.loggedIn ? navbarStore.pathsAuth : navbarStore.pathsGuest)
 
 const width = ref(0);
 
 onMounted(() => {
-  resize();
-  window.addEventListener('resize', resize);
-});
+  resize()
+  window.addEventListener('resize', resize)
+})
 
 onUnmounted(() => {
-  window.removeEventListener('resize', resize);
-});
+  window.removeEventListener('resize', resize)
+})
 
-const mobileView = computed(() => width.value <= 768);
+const mobileView = computed(() => width.value <= 768)
 
 function resize() {
-  width.value = window.innerWidth;
+  width.value = window.innerWidth
 }
 
 

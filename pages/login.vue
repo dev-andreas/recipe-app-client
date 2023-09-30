@@ -10,19 +10,34 @@
                 <label for="password" class="font-bold">Password:</label>
                 <input type="password" name="password" id="password" class="inpt" v-model="password">
             </div>
-            <div class="flex items-center gap-3">
-                <input type="submit" value="Sign in" class="btn btn-primary self-start">
-            </div>  
+            <input type="submit" value="Sign in" class="btn btn-primary self-start">
+            <p v-if="errorMessage != null" class="text-rose-600">{{ errorMessage }}</p>
         </form>
     </div>
 </template>
 
 <script setup>
-    const email = ref("")
-    const password = ref("")
+const { authStore } = useAuthGuest()
 
+const email = ref("")
+const password = ref("")
+const errorMessage = ref("")
 
-    async function login() {
-        console.log(email.value, password.value)
+async function login() {
+    if (email.value == "") {
+        errorMessage.value = "Email must not be empty."
+        return
     }
+
+    if (password.value == "") {
+        errorMessage.value = "Password must not be empty."
+        return
+    }
+
+    if (await authStore.login(email.value, password.value)) {
+        navigateTo("/home")
+    } else {
+        errorMessage.value = authStore.lastResponse.error
+    }
+}
 </script>

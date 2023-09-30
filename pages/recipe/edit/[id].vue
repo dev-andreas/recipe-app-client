@@ -24,7 +24,8 @@
         <ModalPage title="Error" v-model="showErrorModal">
             <p>{{ errorMsg }}</p>
         </ModalPage>
-        <h1 class="text-3xl font-bold"><span v-if="id == 'new'">New Recipe</span><span v-else>{{ name }}</span></h1>
+        <h1 v-if="id == 'new'" class="text-3xl font-bold">New Recipe</h1>
+        <h1 v-else class="text-3xl font-bold">{{ name }}</h1>
         <form class="flex flex-col gap-5 mt-10 w-80" @submit.prevent="save()">
             <div class="flex flex-col gap-1">
                 <label for="name" class="font-bold">Name:</label>
@@ -32,14 +33,14 @@
             </div>
             <div class="flex flex-col gap-1">
                 <label for="type" class="font-bold">Type:</label>
-                <MultiSelect :items="['Breakfast', 'Dinner', 'Lunch']" v-model="type"></MultiSelect>
+                <RadioSelect :items="['BREAKFAST', 'DINNER', 'LUNCH']" v-model="type"></RadioSelect>
             </div>
             <div class="flex flex-col gap-1">
                 <label for="ingredients" class="font-bold">Ingredients:</label>
                 <TransitionGroup class="grid gap-2" name="list" tag="div" @before-leave="beforeLeave">
                     <div v-for="ingredient, index in ingredients" :key="ingredient"
                         class="flex items-center justify-between bg-backg-300 p-1 rounded-xl w-80">
-                        <p class="ml-2">{{ ingredient.name }}, {{ ingredient.amount }}{{ ingredient.unit }}</p>
+                        <p class="ml-2">{{ ingredient.name }}, {{ ingredient.amount }} {{ ingredient.unit }}</p>
                         <button type="button" class="btn btn-primary p-2" @click="ingredients.splice(index, 1)">
                             <SvgpathsTrashSvg class="w-4 h-4 stroke-backg-900" />
                         </button>
@@ -65,7 +66,10 @@
 </template>
 
 <script setup>
-import { useRecipeStore } from "~/stores/stores.js"
+import { useRecipeStore } from "~/stores/recipe.js"
+
+useAuthRecipeUser()
+
 const recipeStore = useRecipeStore()
 const route = useRoute()
 
@@ -116,7 +120,7 @@ async function save() {
         success = await recipeStore.createRecipe({
             "id": 0,
             "name": name.value,
-            "type": type.value,
+            "type": type.value.toUpperCase(),
             "instructions": instructions.value,
             "ingredients": ingredients.value
         })

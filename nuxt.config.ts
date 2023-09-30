@@ -9,10 +9,6 @@ export default defineNuxtConfig({
                 { name: 'description', content: 'Store your recipes.' }
             ],
         },
-        pageTransition: {
-            name: 'slide-bottom',
-            mode: 'out-in',
-        }
     },
     postcss: {
         plugins: {
@@ -20,11 +16,16 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
+    routeRules: {
+        '/home': { ssr: false },
+        '/my-recipes': { ssr: false },
+        '/random': { ssr: false }, 
+    },
     modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
     css: ["~/assets/css/style.css"],
     runtimeConfig: {
         public: {
-            apiUrl: "http://localhost:8080/"
+            apiUrl: "http://localhost:8080/api/v1/"
         }
     }
 })

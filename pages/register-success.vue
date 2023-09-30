@@ -1,7 +1,5 @@
 <template>
-    <div>
-        index
-    </div>
+    <h1>Success</h1>
 </template>
 
 <script setup>
