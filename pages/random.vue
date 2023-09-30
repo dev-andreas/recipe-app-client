@@ -2,9 +2,9 @@
     <div v-if="type == ''" class="flex flex-col items-center gap-5">
         <h1 class="text-3xl font-bold">Select type:</h1>
         <div class="flex gap-2">
-            <button class="btn btn-secondary p-2" @click="setRandomRecipe('Breakfast')">Breakfast</button>
-            <button class="btn btn-secondary p-2" @click="setRandomRecipe('Dinner')">Dinner</button>
-            <button class="btn btn-secondary p-2" @click="setRandomRecipe('Lunch')">Lunch</button>
+            <button class="btn btn-secondary p-2" @click="setRandomRecipe('BREAKFAST')">Breakfast</button>
+            <button class="btn btn-secondary p-2" @click="setRandomRecipe('DINNER')">Dinner</button>
+            <button class="btn btn-secondary p-2" @click="setRandomRecipe('LUNCH')">Lunch</button>
         </div>
     </div>
     <div v-else class="flex flex-col items-center gap-5">
