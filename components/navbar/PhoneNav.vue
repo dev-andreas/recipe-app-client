@@ -2,7 +2,7 @@
     <div>
         <div class="flex justify-between bg-backg-200 items-center shadow-sm transition-all duration-200 ease-out p-3">
             <NuxtLink to="/" class="flex items-center gap-4 transition-all duration-300" @click="open = false">
-                <img src="../../assets/images/leaf.svg" alt="recipe app logo" class="h-8 drop-shadow-flat-sm" />
+                <img src="~/assets/images/leaf.svg" alt="recipe app logo" class="h-8 drop-shadow-flat-sm" />
                 <p v-if="!authStore.loggedIn" class="font-medium text-xl">Recipes</p>
             </NuxtLink>
             <div class="flex items-center justify-center">

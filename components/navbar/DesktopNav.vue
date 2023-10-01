@@ -2,7 +2,7 @@
     <div class="bg-backg-200 flex justify-between items-center shadow-sm p-3">
         <div class="flex">
             <NuxtLink to="/" class="flex items-center gap-4 transition-all duration-300">
-                <img src="../../assets/images/leaf.svg" alt="logo" class="h-8 drop-shadow-flat-sm" />
+                <img src="~/assets/images/leaf.svg" alt="logo" class="h-8 drop-shadow-flat-sm" />
                 <p v-if="!authStore.loggedIn" class="font-medium text-xl">Recipes</p>
             </NuxtLink>
             <ul class="flex items-center gap-3 ml-6">

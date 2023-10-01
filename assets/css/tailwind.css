@@ -27,6 +27,6 @@
     }
 
     .inpt {
-        @apply px-3 py-2 bg-backg-100 rounded-xl border border-backg-500 focus:drop-shadow-flat-sm outline-none;
+        @apply px-3 py-2 bg-zinc-200 rounded-lg border border-backg-500 focus:border-primary-400 focus:drop-shadow-flat-sm outline-none;
     }
 }
