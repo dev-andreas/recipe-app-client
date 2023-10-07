@@ -86,7 +86,20 @@ export const useAuthStore = defineStore("auth", () => {
         return false
     }
 
-    function logout() {
+    async function logout() {
+        try {
+            const rawResponse = await fetch(`${runtimeConfig.public.apiUrl}auth/logout`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken.value
+                }
+            })
+        } catch (e) {
+            console.log(e)
+        }
+        lastResponse.value = null
         accessToken.value = ""
         refreshToken.value = ""
         firstName.value = ""
