@@ -52,7 +52,7 @@ export const useAuthStore = defineStore("auth", () => {
     })
 
     const loggedIn = computed(() => {
-        return refreshToken.value != ""
+        return refreshToken.value != "" && refreshToken.value != "null"
     })
 
     const lastResponse = ref(null)
@@ -86,18 +86,20 @@ export const useAuthStore = defineStore("auth", () => {
         return false
     }
 
-    async function logout() {
-        try {
-            const rawResponse = await fetch(`${runtimeConfig.public.apiUrl}auth/logout`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + accessToken.value
-                }
-            })
-        } catch (e) {
-            console.log(e)
+    async function logout(fetch = true) {
+        if (fetch) {
+            try {
+                await fetch(`${runtimeConfig.public.apiUrl}auth/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + accessToken.value
+                    }
+                })
+            } catch (e) {
+                console.log(e)
+            }
         }
         lastResponse.value = null
         accessToken.value = ""
@@ -150,7 +152,11 @@ export const useAuthStore = defineStore("auth", () => {
                 options.body = JSON.stringify(payload)
             }
             const rawResponse = await fetch(`${runtimeConfig.public.apiUrl}${url}`, options)
-            lastResponse.value = await rawResponse.json()
+            try {
+                lastResponse.value = await rawResponse.json()
+            } catch (e) {
+                lastResponse.value = null
+            }
             if (rawResponse.ok) { // response ok
                 return true
             } else if (rawResponse.status == 401 && retry && await refresh() && await send(url, method, payload, false)) { // access token invalid

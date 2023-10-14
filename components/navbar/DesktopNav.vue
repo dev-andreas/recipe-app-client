@@ -23,8 +23,11 @@
             <NuxtLink to="/login" class="btn btn-primary">Sign in</NuxtLink>
             <NuxtLink to="/register" class="btn btn-primary">Sign up</NuxtLink>
         </div>
-        <div v-else class="flex gap-3">
-            <p class="self-center">{{ authStore.firstName }} {{ lastNameAbbrev }}</p>
+        <div v-else class="flex items-center gap-3">
+            <p>{{ authStore.firstName }} {{ lastNameAbbrev }}</p>
+            <NuxtLink to="/profile">
+                <SvgpathsGearSvg class="stroke-zinc-900 w-5 h-5"></SvgpathsGearSvg>
+            </NuxtLink>
             <button class="btn btn-primary" @click="logout()">Log out</button>
         </div>
     </div>
